@@ -1,0 +1,142 @@
+/* src/App.css */
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: 'Outfit', sans-serif;
+    overflow: hidden;
+}
+
+.timetable-rectangle {
+    display: flex;
+    flex-direction: column;
+}
+
+.timetable-container {
+    width: 100%;
+}
+
+.app-background {
+    background: url('./assets/bg-karate.jpg') top center no-repeat;
+    background-size: contain;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 0 20px;
+    position: relative;
+}
+
+.app-background h1 {
+    font-size: 4vw;
+    color: #EDEDED;
+    text-align: center;
+    background-color: rgba(68, 68, 68, 0.95);
+    padding: 1vw 2vw;
+    border-radius: 15px;
+    max-width: 90%;
+    margin: 0 auto;
+}
+
+.app-background h2 {
+    font-size: 2vw;
+    color: #000000;
+    max-width: 90%;
+    margin: 0 auto;
+}
+
+@media (max-width: 600px) {
+    .app-background h1 {
+        font-size: 6vw;
+        padding: 2vw 4vw;
+    }
+}
+
+@media (min-width: 1200px) {
+    .app-background h1 {
+        font-size: 2vw;
+        padding: 0.5vw 1vw;
+    }
+}
+
+.sign-in-button {
+    background-color: #171717;
+    color: #EDEDED;
+    border: none;
+    font-family: 'Outfit', sans-serif;
+    margin-right: 30px;
+    border-radius: 15px;
+    position: absolute;
+    top: -5px;
+    font-size: 1rem;
+    cursor: pointer;
+    z-index: 1000;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.3s;
+}
+
+.sign-in-button:hover {
+    background-color: #444444;
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(86, 86, 198, 0.3);
+}
+
+@media (max-width: 600px) {
+    .sign-in-button {
+        font-size: 0.8rem;
+        padding: 8px 16px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .sign-in-button {
+        font-size: 1.2rem;
+        padding: 12px 24px;
+    }
+}
+
+.rectangle-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    width: 100%;
+    height: calc(100vh - 200px);
+    box-sizing: border-box;
+}
+
+.rectangle {
+    flex: 1;
+    margin: 10px;
+    background-color: #161616ef;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column; /* Change to column */
+    justify-content: center;
+    height: 80%;
+    align-items: center;
+}
+
+.top-buttons-container,
+.bottom-buttons-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.menu-image {
+    position: absolute;
+    top: 15px;
+    left: 100px;
+    width: 10%; /* Adjust width as needed */
+    height: auto;
+}

@@ -1,0 +1,95 @@
+.button-container {
+    position: absolute;
+    bottom: 20px;
+    width: calc(100% - 40px); /* Subtracting the padding from both sides */
+    display: flex;
+    justify-content: space-between; /* Change to space-between for alignment */
+}
+
+.bottom-button {
+    --buttonSize: 200px;
+    --buttonSizeMinus: calc(-1 * var(--buttonSize));
+    box-shadow: 
+        inset var(--buttonSizeMinus) var(--buttonSizeMinus) 0 var(--weinrot), 
+        inset var(--buttonSize) var(--buttonSizeMinus) 0 var(--rot), 
+        inset var(--buttonSizeMinus) var(--buttonSize) 0 var(--schwarz), 
+        inset var(--buttonSize) var(--buttonSize) 0 var(--weiß), 
+        0 0 20px silver;
+    transition: box-shadow ease-in-out .6s, color ease-in-out .5s;
+    width: 450px;
+    height: var(--buttonSize);
+    border-radius: 15px;
+    padding: 5px 10px;
+    margin: 5px;
+    background: center/50% no-repeat;
+    cursor: pointer;
+    display: flex; /* Changed to flex */
+    justify-content: center; /* Center content horizontally */
+    align-items: center; /* Center content vertically */
+    color: #EDEDED;
+    font-family: 'Outfit', sans-serif;
+    font-size: calc(var(--buttonSize) / 3);
+    position: relative;
+    overflow: hidden;
+}
+
+.bottom-button:hover {
+    box-shadow: 
+        inset 0 0 0 transparent, 
+        inset 0 0 0 transparent, 
+        inset 0 0 0 transparent, 
+        inset 0 0 0 transparent, 
+        0 0 20px silver;
+    color: transparent;
+}
+
+.bottom-button::before {
+    content: attr(data-description);
+    position: absolute;
+    top: 50%; /* Position from the top */
+    left: 50%;
+    transform: translate(-50%, -50%); /* Center horizontally and vertically */
+    background: rgba(0, 0, 0, 0.95);
+    color: #EDEDED;
+    padding: 10px;
+    border-radius: 15px;
+    font-size: 30px;
+    white-space: pre-wrap; /* Allows text to wrap */
+    word-break: break-all;
+    hyphens: auto;
+    opacity: 0;
+    transition: opacity 0.9s;
+    z-index: 10;
+    height: 98%;
+    width: 98%;
+    text-align: justify; /* Justify the text */
+    display: flex; /* Add flex to center content inside the pseudo-element */
+    justify-content: center; /* Center content horizontally */
+    align-items: center; /* Center content vertically */
+}
+
+.bottom-button::before::after {
+    content: "";
+    display: inline-block;
+    width: 100%; /* Make the last line justified */
+}
+
+.bottom-button:hover::before {
+    opacity: 1;
+}
+
+.bottom-button.button1::before {
+    content: "Erstellen Sie Termine für Schüler bestimmter Gurtfarben und Sportarten und fügen Sie eine Beschreibung hinzu.";
+}
+
+.bottom-button.button2::before {
+    content: "Senden Sie Nachrichten an Schüler bestimmter Gurtfarben und Sportarten.";
+}
+
+.bottom-button.button3::before {
+    content: "Fügen Sie Techniken hinzu, löschen oder bearbeiten Sie bestehende Techniken.";
+}
+
+.bottom-button.button4::before {
+    content: "Verwalten Sie den Kurszeitplan: Kurse hinzufügen, löschen oder ändern.";
+}

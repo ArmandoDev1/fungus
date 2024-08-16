@@ -1,0 +1,172 @@
+
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.app-background h2 {
+    color: rgb(255, 255, 255);
+}
+
+.popup-content {
+    padding: 20px;
+    width: 95%;
+    height: 90%;
+    max-width: 1200px;
+    max-height: 90%;
+    overflow-y: auto;
+    border-radius: 15px;
+    background: linear-gradient(90deg, rgba(163,0,29,1) 33%, rgba(209,0,25,1) 66%);
+}
+
+.close-button {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    float: right;
+}
+
+.popup-columns {
+    display: flex;
+    justify-content: space-between;
+}
+
+.column {
+    flex: 1;
+    margin: 0 10px;
+}
+
+.input-row {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    color: white;
+}
+
+.input-row label {
+    width: 100px;
+}
+
+.input-row select,
+.input-row input {
+    flex: 1;
+    margin-left: 50px;
+    font-family: 'Outfit', sans-serif;
+    background-color: #252525;
+    color: #e4e4e4;
+}
+
+.halle-row {
+    display: flex;
+    align-items: center;
+}
+
+.halle-buttons {
+    display: flex;
+    gap: 10px;
+    margin-left: 50px;
+}
+
+.halle-buttons button {
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.halle-buttons .selected {
+    background-color: #007bff;
+    color: white;
+}
+
+.halle-buttons button,
+.halle-row,
+.input-row select,
+.input-row input,
+.input-row label,
+.input-row {
+    margin-top: 30px;
+    font-size: 20px;
+}
+
+.popup-button {
+    padding: 10px 20px;
+    margin-left: 230px;
+    margin-top: 50px;
+    background-color: #666666;
+    color: white;
+    border: none;
+    font-family: 'Outfit', sans-serif;
+    border-radius: 15px;
+    font-size: 1rem;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.3s;
+}
+
+.popup-button:hover {
+    background-color: #1a1919;
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(86, 86, 198, 0.3);
+}
+
+.popup-button::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 15px;
+    background: rgba(0, 0, 0, 0.2);
+    z-index: -1;
+    transition: opacity 0.3s;
+    opacity: 0;
+}
+
+.popup-button:hover::after {
+    opacity: 1;
+}
+
+.course-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.course-item {
+    background: #444;
+    color: white;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.edit-button,
+.delete-button {
+    margin-left: 10px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.edit-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+}
+
+.delete-button {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+}
