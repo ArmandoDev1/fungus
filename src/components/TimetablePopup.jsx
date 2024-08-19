@@ -1,9 +1,7 @@
-// File: Popup.jsx
-
 import React, { useState, useEffect } from 'react';
-import './Popup.css';
+import './TimetablePopup.css';
 
-const Popup = ({ onClose, onCoursesUpdate }) => {
+const TimetablePopup = ({ onClose, onCoursesUpdate }) => {
   const [selectedHalle, setSelectedHalle] = useState(null);
   const [weekday, setWeekday] = useState('');
   const [startTime, setStartTime] = useState('');
@@ -172,4 +170,4 @@ const Popup = ({ onClose, onCoursesUpdate }) => {
   );
 };
 
-export default Popup;
+export default TimetablePopup;

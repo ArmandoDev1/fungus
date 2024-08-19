@@ -1,0 +1,141 @@
+/* File: TimetablePopup.css */
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.popup-content {
+    padding: 30px;  /* Increased padding for a more spacious feel */
+    width: 90%;
+    height: 90%;
+    max-width: 1400px;  /* Increased max width */
+    max-height: 90%;
+    overflow-y: auto;
+    border-radius: 15px;
+    background: linear-gradient(90deg, rgba(163,0,29,1) 33%, rgba(209,0,25,1) 66%);
+}
+
+.close-button {
+    background: none;
+    border: none;
+    font-size: 28px;  /* Increased font size for the close button */
+    cursor: pointer;
+    color: white;
+    float: right;
+}
+
+.popup-columns {
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;  /* Increased gap between columns */
+}
+
+.input-row {
+    display: flex;
+    align-items: center;
+    color: white;
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+}
+
+.input-row label {
+    width: 150px; /* Consistent label width */
+    margin-top: 20px;
+    font-weight: bold;
+    text-align: left;
+    font-size: 17px;
+    padding-right: 20px; /* Space between label and input */
+}
+
+/* Apply consistent styles to both input[type="text"] and select elements */
+.input-row select,
+.input-row input[type="text"] {
+    flex: 0 1 70%; /* Equal space allocation */
+    margin-top: 20px;
+    padding: 12px;
+    background-color: #252525;
+    color: #e4e4e4;
+    border-radius: 15px; /* Consistent border radius */
+    border: 1px solid #444;
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.1rem;
+    box-sizing: border-box; /* Ensures padding is included in width calculation */
+    width: 100%; /* Ensures consistent width */
+}
+
+.input-row select {
+    padding: 12px; /* Match the padding of the text input fields */
+    text-align: left;
+    margin-left: 10px;
+}
+
+.column {
+    flex: 1;
+    max-width: 500px; /* Set max-width to keep layout consistent */
+}
+
+.popup-button {
+    padding: 15px 30px;  /* Larger button with more padding */
+    margin-top: 30px;
+    background-color: #666666;
+    color: white;
+    border: none;
+    margin-left: 150px;
+    font-family: 'Outfit', sans-serif;
+    border-radius: 15px;
+    font-size: 1.2rem;  /* Increased button font size */
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.popup-button:hover {
+    background-color: #1a1919;
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(86, 86, 198, 0.3);
+}
+
+.course-list {
+    list-style-type: none;
+    padding: 0;
+    font-size: 1.2rem;  /* Increased font size for course items */
+}
+
+.course-item {
+    background: #444;
+    color: white;
+    padding: 15px;  /* Increased padding for course items */
+    margin-bottom: 15px;  /* Increased margin for spacing between items */
+    border-radius: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.edit-button,
+.delete-button {
+    margin-left: 15px;  /* Increased margin between buttons */
+    padding: 8px 15px;  /* Larger buttons */
+    border-radius: 15px;
+    cursor: pointer;
+    border: none;
+    font-family: 'Outfit', sans-serif;
+    font-size: 1rem;  /* Increased font size for buttons */
+}
+
+.edit-button {
+    background-color: #007bff;
+    color: white;
+}
+
+.delete-button {
+    background-color: #dc3545;
+    color: white;
+}

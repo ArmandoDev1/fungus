@@ -1,1 +1,0 @@
-[{"wochentag":"Montag","startzeit":"17:30","endzeit":"18:30","name":"Jiu","beschreibung":"Abc"}]
