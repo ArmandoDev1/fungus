@@ -1,5 +1,8 @@
+// File: TimetablePopup.jsx
+
 import React, { useState, useEffect } from 'react';
 import './TimetablePopup.css';
+import { fetchCourses, addCourse, updateCourse, deleteCourse } from './timetableService';
 
 const TimetablePopup = ({ onClose, onCoursesUpdate }) => {
   const [selectedHalle, setSelectedHalle] = useState(null);
@@ -13,8 +16,9 @@ const TimetablePopup = ({ onClose, onCoursesUpdate }) => {
   const [editIndex, setEditIndex] = useState(null);
 
   useEffect(() => {
-    const storedCourses = JSON.parse(localStorage.getItem('courses')) || [];
-    setCourses(storedCourses);
+    fetchCourses()
+      .then(setCourses)
+      .catch((error) => console.error('Error fetching courses:', error));
   }, []);
 
   const weekdays = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
@@ -33,7 +37,7 @@ const TimetablePopup = ({ onClose, onCoursesUpdate }) => {
 
   const times = generateTimes();
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const newCourse = {
       day: weekday,
       startTime,
@@ -41,21 +45,27 @@ const TimetablePopup = ({ onClose, onCoursesUpdate }) => {
       name,
       description,
       location,
-      hall: selectedHalle
+      hall: selectedHalle,
     };
 
-    let updatedCourses = [...courses];
-    if (editIndex !== null) {
-      updatedCourses[editIndex] = newCourse;
-    } else {
-      updatedCourses.push(newCourse);
+    try {
+      if (editIndex !== null) {
+        const courseToUpdate = courses[editIndex];
+        const updatedCourse = await updateCourse(courseToUpdate.id, newCourse);
+        const updatedCourses = courses.map((course, i) => (i === editIndex ? updatedCourse : course));
+        setCourses(updatedCourses);
+        onCoursesUpdate(updatedCourses);
+      } else {
+        const addedCourse = await addCourse(newCourse);
+        const updatedCourses = [...courses, addedCourse];
+        setCourses(updatedCourses);
+        onCoursesUpdate(updatedCourses);
+      }
+      resetForm();
+      onClose();
+    } catch (error) {
+      console.error('Error submitting course:', error);
     }
-
-    setCourses(updatedCourses);
-    localStorage.setItem('courses', JSON.stringify(updatedCourses));
-    onCoursesUpdate(updatedCourses);
-    resetForm();
-    onClose();
   };
 
   const resetForm = () => {
@@ -81,11 +91,16 @@ const TimetablePopup = ({ onClose, onCoursesUpdate }) => {
     setEditIndex(index);
   };
 
-  const handleDelete = (index) => {
-    const updatedCourses = courses.filter((_, i) => i !== index);
-    setCourses(updatedCourses);
-    localStorage.setItem('courses', JSON.stringify(updatedCourses));
-    onCoursesUpdate(updatedCourses);
+  const handleDelete = async (index) => {
+    const courseToDelete = courses[index];
+    try {
+      await deleteCourse(courseToDelete.id);
+      const updatedCourses = courses.filter((_, i) => i !== index);
+      setCourses(updatedCourses);
+      onCoursesUpdate(updatedCourses);
+    } catch (error) {
+      console.error('Error deleting course:', error);
+    }
   };
 
   return (
@@ -97,51 +112,59 @@ const TimetablePopup = ({ onClose, onCoursesUpdate }) => {
             <h2>{editIndex !== null ? 'Kurs aktualisieren' : 'Kurs hinzufügen'}</h2>
             <div className="input-row">
               <label>Wochentag:</label>
-              <select value={weekday} onChange={e => setWeekday(e.target.value)}>
+              <select value={weekday} onChange={(e) => setWeekday(e.target.value)}>
                 <option value="">Wählen</option>
                 {weekdays.map((day, index) => (
-                  <option key={index} value={day}>{day}</option>
+                  <option key={index} value={day}>
+                    {day}
+                  </option>
                 ))}
               </select>
             </div>
             <div className="input-row">
               <label>Startzeit:</label>
-              <select value={startTime} onChange={e => setStartTime(e.target.value)}>
+              <select value={startTime} onChange={(e) => setStartTime(e.target.value)}>
                 <option value="">Wählen</option>
                 {times.map((time, index) => (
-                  <option key={index} value={time}>{time}</option>
+                  <option key={index} value={time}>
+                    {time}
+                  </option>
                 ))}
               </select>
             </div>
             <div className="input-row">
               <label>Endzeit:</label>
-              <select value={endTime} onChange={e => setEndTime(e.target.value)}>
+              <select value={endTime} onChange={(e) => setEndTime(e.target.value)}>
                 <option value="">Wählen</option>
                 {times.map((time, index) => (
-                  <option key={index} value={time}>{time}</option>
+                  <option key={index} value={time}>
+                    {time}
+                  </option>
                 ))}
               </select>
             </div>
             <div className="input-row">
               <label>Name:</label>
-              <input type="text" value={name} onChange={e => setName(e.target.value)} />
+              <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
             </div>
             <div className="input-row">
               <label>Beschreibung:</label>
-              <input type="text" value={description} onChange={e => setDescription(e.target.value)} />
+              <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} />
             </div>
             <div className="input-row">
               <label>Ort:</label>
-              <select value={location} onChange={e => setLocation(e.target.value)}>
+              <select value={location} onChange={(e) => setLocation(e.target.value)}>
                 <option value="">Wählen</option>
                 {['Spandau', 'Lübars', 'Wilmersdorf', 'Steglitz', 'Tegel', 'Waltersdorf'].map((loc, index) => (
-                  <option key={index} value={loc}>{loc}</option>
+                  <option key={index} value={loc}>
+                    {loc}
+                  </option>
                 ))}
               </select>
             </div>
             <div className="input-row">
               <label>Halle:</label>
-              <select value={selectedHalle} onChange={e => setSelectedHalle(e.target.value)}>
+              <select value={selectedHalle} onChange={(e) => setSelectedHalle(e.target.value)}>
                 <option value="">Wählen</option>
                 <option value="Halle 1">Halle 1</option>
                 <option value="Halle 2">Halle 2</option>
@@ -158,8 +181,12 @@ const TimetablePopup = ({ onClose, onCoursesUpdate }) => {
               {courses.map((course, index) => (
                 <li className="course-item" key={index}>
                   {course.name}, {course.day} {course.startTime} - {course.endTime}, {course.location}
-                  <button className="edit-button" onClick={() => handleEdit(index)}>Bearbeiten</button>
-                  <button className="delete-button" onClick={() => handleDelete(index)}>Löschen</button>
+                  <button className="edit-button" onClick={() => handleEdit(index)}>
+                    Bearbeiten
+                  </button>
+                  <button className="delete-button" onClick={() => handleDelete(index)}>
+                    Löschen
+                  </button>
                 </li>
               ))}
             </ul>

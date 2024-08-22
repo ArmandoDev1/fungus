@@ -1,9 +1,19 @@
 // File: Timetable.jsx
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './Timetable.css';
+import { fetchCourses } from './timetableService';
 
-const Timetable = ({ courses }) => {
+const Timetable = () => {
+  const [courses, setCourses] = useState([]);
+
+  useEffect(() => {
+    // Fetch courses from the server on component mount
+    fetchCourses()
+      .then(setCourses)
+      .catch((error) => console.error('Error fetching courses:', error));
+  }, []);
+
   const days = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
   const timeSlots = ['15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '19:30', '20:00', '20:30', '21:00', '21:30', '22:00'];
 
@@ -14,14 +24,13 @@ const Timetable = ({ courses }) => {
     let boxIndex = 0;
     const totalBoxes = Math.ceil((endTime - currentTime) / (30 * 60000)); // Number of 30-minute intervals
 
-
     while (currentTime < endTime) {
       const formattedTime = currentTime.toTimeString().substring(0, 5);
       let content = '';
-      console.log({boxIndex}+ '  mooinn');
+
       // Assign different content based on the box index
       if (boxIndex === 0) {
-        content = course.name; // First box: course n
+        content = course.name; // First box: course name
       } else if (boxIndex === 1) {
         content = course.description; // Second box: course description
       } else if (boxIndex === totalBoxes - 1) {
