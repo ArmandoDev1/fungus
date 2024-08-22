@@ -43,6 +43,7 @@ const TechniquesPopup = ({ onClose }) => {
           colour: colourOptions,
           where_col: whereColOptions,
         });
+        referrerPolicy: "unsafe-url" 
       })
       .catch(error => console.error('Error fetching techniques:', error));
   }, []);
@@ -66,6 +67,7 @@ const TechniquesPopup = ({ onClose }) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(formData),
+      referrerPolicy: "unsafe-url" 
     })
       .then(response => response.json())
       .then(newTechnique => {
@@ -90,6 +92,7 @@ const TechniquesPopup = ({ onClose }) => {
     const techniqueId = techniques[index].id;
     fetch(`http://home.lomoff.de:5000/techniques/${techniqueId}`, {
       method: 'DELETE',
+      referrerPolicy: "unsafe-url" 
     })
       .then(response => {
         if (!response.ok) {
