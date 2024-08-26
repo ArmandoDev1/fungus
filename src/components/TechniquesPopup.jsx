@@ -1,5 +1,8 @@
+// File: TechniquesPopup.jsx
+
 import React, { useState, useEffect } from 'react';
 import './TechniquesPopup.css';
+import { fetchTechniques, addTechnique, updateTechnique, deleteTechnique } from './saveToLocalStorage';
 
 const TechniquesPopup = ({ onClose }) => {
   const [techniques, setTechniques] = useState([]);
@@ -26,8 +29,7 @@ const TechniquesPopup = ({ onClose }) => {
   });
 
   useEffect(() => {
-    fetch('http://home.lomoff.de:5000/techniques')
-      .then(response => response.json())
+    fetchTechniques()
       .then(data => {
         setTechniques(data);
 
@@ -43,7 +45,6 @@ const TechniquesPopup = ({ onClose }) => {
           colour: colourOptions,
           where_col: whereColOptions,
         });
-        referrerPolicy: "unsafe-url" 
       })
       .catch(error => console.error('Error fetching techniques:', error));
   }, []);
@@ -55,32 +56,23 @@ const TechniquesPopup = ({ onClose }) => {
     });
   };
 
-  const handleSubmit = () => {
-    const method = editIndex !== null ? 'PUT' : 'POST';
-    const url = editIndex !== null 
-      ? `http://home.lomoff.de:5000/techniques/${techniques[editIndex].id}`
-      : 'http://home.lomoff.de:5000/techniques';
+  const handleSubmit = async () => {
+    const newTechnique = { ...formData };
 
-    fetch(url, {
-      method,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(formData),
-      referrerPolicy: "unsafe-url" 
-    })
-      .then(response => response.json())
-      .then(newTechnique => {
-        if (editIndex !== null) {
-          const updatedTechniques = [...techniques];
-          updatedTechniques[editIndex] = newTechnique;
-          setTechniques(updatedTechniques);
-        } else {
-          setTechniques([...techniques, newTechnique]);
-        }
-        resetForm();
-      })
-      .catch(error => console.error('Error submitting technique:', error));
+    try {
+      if (editIndex !== null) {
+        const techniqueToUpdate = techniques[editIndex];
+        const updatedTechnique = await updateTechnique(techniqueToUpdate.id, newTechnique);
+        const updatedTechniques = techniques.map((tech, i) => (i === editIndex ? updatedTechnique : tech));
+        setTechniques(updatedTechniques);
+      } else {
+        const addedTechnique = await addTechnique(newTechnique);
+        setTechniques([...techniques, addedTechnique]);
+      }
+      resetForm();
+    } catch (error) {
+      console.error('Error submitting technique:', error);
+    }
   };
 
   const handleEdit = (index) => {
@@ -88,23 +80,16 @@ const TechniquesPopup = ({ onClose }) => {
     setEditIndex(index);
   };
 
-  const handleDelete = (index) => {
-    const techniqueId = techniques[index].id;
-    fetch(`http://home.lomoff.de:5000/techniques/${techniqueId}`, {
-      method: 'DELETE',
-      referrerPolicy: "unsafe-url" 
-    })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Error deleting technique');
-        }
-        // Update the techniques state by filtering out the deleted item by ID
-        const updatedTechniques = techniques.filter(technique => technique.id !== techniqueId);
-        setTechniques(updatedTechniques);
-      })
-      .catch(error => console.error('Error deleting technique:', error));
+  const handleDelete = async (index) => {
+    const techniqueToDelete = techniques[index];
+    try {
+      await deleteTechnique(techniqueToDelete.id);
+      const updatedTechniques = techniques.filter((_, i) => i !== index);
+      setTechniques(updatedTechniques);
+    } catch (error) {
+      console.error('Error deleting technique:', error);
+    }
   };
-  
 
   const resetForm = () => {
     setFormData({
@@ -133,12 +118,12 @@ const TechniquesPopup = ({ onClose }) => {
             <h2>{editIndex !== null ? 'Technik aktualisieren' : 'Technik hinzufügen'}</h2>
             <div className="input-row">
               <label>Sportart:</label>
-              <select name="sportart" value={formData.sportart} onChange={handleChange}>
-                <option value="">Wählen</option>
-                {options.sportart.map((option, idx) => (
-                  <option key={idx} value={option}>{option}</option>
-                ))}
-              </select>
+                <input 
+                type="text" 
+                name="sportart"
+                value={formData.sportart} 
+                onChange={handleChange} 
+                />
             </div>
             <div className="input-row">
               <label>Name:</label>
@@ -159,31 +144,31 @@ const TechniquesPopup = ({ onClose }) => {
               />
             </div>
             <div className="input-row">
-              <label>Art:</label>
-              <select name="art" value={formData.art} onChange={handleChange}>
-                <option value="">Wählen</option>
-                {options.art.map((option, idx) => (
-                  <option key={idx} value={option}>{option}</option>
-                ))}
-              </select>
+            <label>Art:</label>
+              <input 
+                type="text" 
+                name="art"
+                value={formData.art} 
+                onChange={handleChange} 
+              />
             </div>
             <div className="input-row">
-              <label>Farbe:</label>
-              <select name="colour" value={formData.colour} onChange={handleChange}>
-                <option value="">Wählen</option>
-                {options.colour.map((option, idx) => (
-                  <option key={idx} value={option}>{option}</option>
-                ))}
-              </select>
+            <label>Farbe:</label>
+              <input 
+                type="text" 
+                name="colour"
+                value={formData.colour} 
+                onChange={handleChange} 
+              />
             </div>
             <div className="input-row">
-              <label>Ort:</label>
-              <select name="where_col" value={formData.where_col} onChange={handleChange}>
-                <option value="">Wählen</option>
-                {options.where_col.map((option, idx) => (
-                  <option key={idx} value={option}>{option}</option>
-                ))}
-              </select>
+            <label>Kategorie:</label>
+              <input 
+                type="text" 
+                name="where_col"
+                value={formData.where_col} 
+                onChange={handleChange} 
+              />
             </div>
             <button className="popup-button" onClick={handleSubmit}>
               {editIndex !== null ? 'Aktualisieren' : 'Hinzufügen'}
@@ -198,7 +183,7 @@ const TechniquesPopup = ({ onClose }) => {
                     <strong>{technique.name}</strong> ({technique.sportart})<br />
                     <small>Art: {technique.art}</small><br />
                     <small>Farbe: {technique.colour}</small><br />
-                    <small>Ort: {technique.where_col}</small>
+                    <small>Kategorie: {technique.where_col}</small>
                   </div>
                   <div className="technique-buttons">
                     <button 

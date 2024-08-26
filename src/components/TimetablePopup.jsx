@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import './TimetablePopup.css';
-import { fetchCourses, addCourse, updateCourse, deleteCourse } from './timetableService';
+import { fetchCourses, addCourse, updateCourse, deleteCourse } from './saveToLocalStorage';
 
 const TimetablePopup = ({ onClose, onCoursesUpdate }) => {
   const [selectedHalle, setSelectedHalle] = useState(null);
@@ -22,20 +22,7 @@ const TimetablePopup = ({ onClose, onCoursesUpdate }) => {
   }, []);
 
   const weekdays = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
-
-  const generateTimes = () => {
-    const times = [];
-    for (let hour = 15; hour <= 22; hour++) {
-      for (let minute = 0; minute < 60; minute += 30) {
-        const formattedHour = hour < 10 ? `0${hour}` : hour;
-        const formattedMinute = minute < 10 ? `0${minute}` : minute;
-        times.push(`${formattedHour}:${formattedMinute}`);
-      }
-    }
-    return times;
-  };
-
-  const times = generateTimes();
+  const times = ['15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '19:30', '20:00', '20:30', '21:00', '21:30', '22:00'];
 
   const handleSubmit = async () => {
     const newCourse = {
